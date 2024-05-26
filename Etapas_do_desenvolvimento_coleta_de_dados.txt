@@ -1,0 +1,252 @@
+Desenvolvimento da captação dos dados utilizando um banco de dados não relacional 
+
+Banco de dados utilizado : MongoDB (Interno) 
+
+Linguagens: JS e CSS 
+
+Estruturação
+
+1) Criação do formato da página html para implementação do script --- > página inicial (ok) --> motivação (ok) 
+
+2) Elaborar perguntas coerentes que possam me dar resultados de uma boa analise dos dados 
+
+2.1 --> Perguntas básicas ( ex : qual area do conhecimento que o docente mais tem dificuldades) 
+
+2.2 --> Perguntas intermediárias ( ex : dificuldade com operações básicas de mtm, dificuldades em entender conceitos básicos (teóricos), dificuldade em linguagens..)   
+
+2.3 --> Perguntas específicas 
+
+3) Criação do script referente ao trabalho --> criando o modelo para implementação
+
+
+Planejamento da Pesquisa:
+
+
+Defina o objetivo da pesquisa: O que você espera aprender com os alunos? R: coletar dados a partir da percepção do próprio aluno em relação ao processo de ensino aprendizado
+Determine as questões da pesquisa: Quais informações específicas você deseja coletar dos alunos? 
+
+1) Você tem uma maneira específica para aprender? ok (p1) 
+Esta é uma boa pergunta inicial para entender as preferências individuais de aprendizado dos participantes.
+
+2) Você utiliza alguma técnica para aprender conteúdos de exatas? Se sim, quais? (ok) p3
+Esta pergunta é específica e direcionada, o que pode fornecer insights valiosos sobre as estratégias de estudo dos alunos em disciplinas de exatas.
+
+3) Você utiliza alguma técnica para aprender conteúdos de humanas? Se sim, quais? (p4) ok 
+Da mesma forma que a pergunta anterior, esta é direcionada para entender as estratégias de estudo dos alunos em disciplinas de humanas.
+
+4) O gráfico da função y = x^2 + 2 é uma:  (ok) p2
+Essa pergunta testa o conhecimento matemático dos participantes e pode ser uma forma eficaz de avaliar seu nível de compreensão.
+
+5) Quantos continentes existem? (p5)
+Você pode especificar um tópico ou assunto específico das ciências humanas para essa pergunta, de modo que você possa obter informações relevantes sobre o conhecimento dos participantes nessa área.
+
+6) Existe alguma ferramenta (vídeos, sites, pesquisa) que você utiliza para estudar? p6 (ok)
+Esta pergunta pode ajudá-lo a identificar recursos de aprendizado populares entre os alunos, o que pode ser útil para recomendar materiais no futuro.
+
+7) Você acha o caderno importante para você aprender exatas? p7 (ok)
+Esta questão aborda o uso de materiais de estudo específicos para disciplinas de exatas e pode fornecer insights sobre as preferências de estudo dos participantes.
+
+8)Quais das opções abaixo mais se aproximam da sua opinião sobre o ChatGPT: (ok)
+Esta pergunta pode ser valiosa para entender a percepção dos participantes sobre a ferramenta ChatGPT e como ela pode ser útil em seu processo de aprendizado.
+
+coleções / neste trabalho eu utilizei o banco de dados baseado em documentos  MongoDB, desta maneira, separei as perguntas em coleções para posteriormente serem analizadas com aprendizado de maquina
+
+coleções :  coleção I >> perguntas 1 e 3   - servidor 3000
+            coleção II >> perguntas 2 e 8  - servidor 3001
+            coleção III >> perguntas 4 e 5 - servidor 3002
+            coleção IV >> perguntas 6 e 7  - servidor 3003
+
+
+
+
+
+
+
+
+
+final >>> código : <div class="question-box2">
+            <div class="question">
+                <h1>OBRIGADO PELA PARTICIPAÇÃO!</h1>
+            </div>
+            </div>
+        </div> 
+ 
+
+
+
+
+
+
+Escolha o método de coleta de dados: Você usará questionários online, entrevistas, grupos focais ou uma combinação deles?
+Estabeleça critérios éticos: Certifique-se de que sua pesquisa respeite a privacidade e os direitos dos participantes.
+
+- questionários online criado pelo autor
+
+
+
+Desenvolvimento da Pesquisa:
+Crie as perguntas da pesquisa com cuidado: Elas devem ser claras, concisas e relevantes para o objetivo da pesquisa.
+Considere incluir perguntas abertas e fechadas: As perguntas abertas fornecerão insights mais detalhados, enquanto as perguntas fechadas facilitarão a análise quantitativa dos dados.
+Planeje a estrutura da pesquisa: Organize as perguntas de forma lógica e coerente para manter o engajamento dos participantes.
+
+Implementação da Pesquisa:
+Escolha a plataforma de pesquisa: Existem muitas opções disponíveis para criar e distribuir pesquisas online, como Google Forms, SurveyMonkey, Typeform, entre outros.
+Teste a pesquisa: Antes de lançá-la para os alunos, faça um teste para garantir que tudo funcione corretamente e que as perguntas sejam compreensíveis.
+Análise dos Resultados:
+Coleta de dados: Após o término da pesquisa, compile e organize os dados coletados.
+
+Analise os resultados: Identifique padrões, tendências e insights importantes que surgiram dos dados.
+Extraia conclusões: Com base na análise, tire conclusões sobre as preferências e necessidades dos alunos.
+Elaboração do Material Personalizado:
+Use os insights da pesquisa para criar um material personalizado que atenda às necessidades e preferências identificadas.
+Considere diferentes formatos, como guias, vídeos, infográficos, entre outros, dependendo do conteúdo e das preferências dos alunos.
+
+
+Avaliação e Feedback:
+Após a criação do material personalizado, solicite feedback dos alunos para garantir que atenda às suas expectativas e necessidades.
+Esteja aberto a ajustes e melhorias com base no feedback recebido.
+
+
+
+caso de erro >> 
+
+
+const express = require('express');
+const mongoose = require('mongoose');
+const cors = require( 'cors');
+//const { Usuario, Usuario2, Usuario3, Usuario4 } = require('./models');
+const app   = express();
+const port  = 3000;
+const port2 = 3001;
+const port3 = 3002;
+const port4 = 3003;
+// Configuração do CORS para permitir origens específicas
+app.use( (req,res,next) => { 
+
+  res.header("Access-Control-Allow-Origin","https://trabalhofaculdadepatrick.netlify.app");
+  //res.header("Access-Control-Allow-Origin","GET,PUT,POST,DELETE");
+  app.use(cors());
+  next();
+}
+) ; 
+
+//app.use(cors({  })); 
+
+// Conexão com o banco de dados MongoDB
+mongoose.connect('mongodb+srv://pkflabr7:NCfyzb8Yup475Ga8@cluster1.mzqzaqa.mongodb.net/EX4?retryWrites=true&w=majority', {
+  // Configurações de conexão, se necessário
+});
+
+const db = mongoose.connection;
+
+db.on('error', console.error.bind(console, 'Erro na conexão com o MongoDB:'));
+db.once('open', () => {
+  console.log('Conexão com o MongoDB estabelecida com sucesso!');
+});
+
+
+const usuarioSchema = new mongoose.Schema({
+  pergunta1: String, 
+  pergunta3: String,
+  createdAt: { type: Date, default: Date.now() }
+});
+
+const usuarioSchema2 = new mongoose.Schema({
+  opcao: String,
+  opcao8: String,
+  createdAt: { type: Date, default: Date.now() }
+});
+
+const usuarioSchema3 = new mongoose.Schema({
+  pergunta4: String,
+  pergunta5: Number,
+  createdAt: { type: Date, default: Date.now() }
+});
+
+const usuarioSchema4 = new mongoose.Schema({
+  pergunta6: String,
+  pergunta7: String,
+  createdAt: { type: Date, default: Date.now() }
+});
+
+const Usuario = mongoose.model('Usuario', usuarioSchema, 'pergunta_1_e_3');
+const Usuario2 = mongoose.model('Usuario2', usuarioSchema2, 'pergunta_2');
+const Usuario3 = mongoose.model('Usuario3', usuarioSchema3, 'pergunta_4_e_5');
+const Usuario4 = mongoose.model('Usuario4', usuarioSchema4, 'pergunta_6_e_7');
+
+module.exports = { //exportanto os usuarios para o moongose
+  Usuario,
+  Usuario2,
+  Usuario3,
+  Usuario4
+};
+
+
+
+
+
+app.use(express.json());  // usando express
+
+
+
+// Rota para o serviço 3000
+app.post('/pergunta_1_e_3/', async (req, res) => {
+  try {
+    const novoUsuario = await Usuario.create(req.body);
+    res.json(novoUsuario);
+  } catch (error) {
+    res.status(500).json({ error: 'Erro ao criar usuário' });
+  }
+});
+
+// Rota para o serviço 3001
+app.post('/pergunta2/', async (req, res) => {
+  try {
+    const novoUsuario = await Usuario2.create(req.body);
+    res.json(novoUsuario);
+  } catch (error) {
+    res.status(500).json({ error: 'Erro ao criar usuário' });
+  }
+});
+
+// Rota para o serviço 3002
+app.post('/pergunta_4_e_5/', async (req, res) => {
+  try {
+    const novoUsuario = await Usuario3.create(req.body);
+    res.json(novoUsuario);
+  } catch (error) {
+    res.status(500).json({ error: 'Erro ao criar usuário' });
+  }
+});
+
+// Rota para o serviço 3003
+app.post('/pergunta_6_e_7/', async (req, res) => {
+  try {
+    const novoUsuario = await Usuario4.create(req.body);
+    res.json(novoUsuario);
+  } catch (error) {
+    res.status(500).json({ error: 'Erro ao criar usuário' });
+  }
+});
+
+
+
+// Adicione este console.log para exibir a porta
+app.listen(port, () => {
+  console.log(`Servidor Node.js rodando na porta ${port}`);
+});
+
+// Adicione este console.log para exibir a porta
+app.listen(port2, () => {
+  console.log(`Servidor Node.js rodando na porta ${port2}`);
+});
+
+// Adicione este console.log para exibir a porta
+app.listen(port3, () => {
+  console.log(`Servidor Node.js rodando na porta ${port3}`);
+});
+
+// Adicione este console.log para exibir a porta
+app.listen(port4, () => {
+  console.log(`Servidor Node.js rodando na porta ${port4}`);
+});
